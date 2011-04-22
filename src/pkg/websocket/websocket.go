@@ -13,6 +13,7 @@ import (
 	"bufio"
 	"crypto/md5"
 	"encoding/binary"
+	"http"
 	"io"
 	"net"
 	"os"
@@ -43,6 +44,8 @@ type Conn struct {
 	Location string
 	// The subprotocol for the Web Socket.
 	Protocol string
+	// The original HTTP request.
+	Request  *http.Request
 
 	buf *bufio.ReadWriter
 	rwc io.ReadWriteCloser
@@ -53,13 +56,13 @@ type Conn struct {
 }
 
 // newConn creates a new Web Socket.
-func newConn(origin, location, protocol string, buf *bufio.ReadWriter, rwc io.ReadWriteCloser) *Conn {
+func newConn(origin, location, protocol string, buf *bufio.ReadWriter, rwc io.ReadWriteCloser, req *http.Request) *Conn {
 	if buf == nil {
 		br := bufio.NewReader(rwc)
 		bw := bufio.NewWriter(rwc)
 		buf = bufio.NewReadWriter(br, bw)
 	}
-	ws := &Conn{Origin: origin, Location: location, Protocol: protocol, buf: buf, rwc: rwc}
+	ws := &Conn{Origin: origin, Location: location, Protocol: protocol, Request: req, buf: buf, rwc: rwc}
 	return ws
 }
 

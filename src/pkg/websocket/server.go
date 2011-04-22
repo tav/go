@@ -149,7 +149,7 @@ func (f Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if err := buf.Flush(); err != nil {
 		return
 	}
-	ws := newConn(origin, location, protocol, buf, rwc)
+	ws := newConn(origin, location, protocol, buf, rwc, req)
 	f(ws)
 }
 
@@ -214,6 +214,6 @@ func (f Draft75Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if err := buf.Flush(); err != nil {
 		return
 	}
-	ws := newConn(origin, location, protocol, buf, rwc)
+	ws := newConn(origin, location, protocol, buf, rwc, req)
 	f(ws)
 }

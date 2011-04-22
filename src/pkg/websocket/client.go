@@ -67,7 +67,7 @@ func newClient(resourceName, host, origin, location, protocol string, rwc io.Rea
 		return
 	}
 	buf := bufio.NewReadWriter(br, bw)
-	ws = newConn(origin, location, protocol, buf, rwc)
+	ws = newConn(origin, location, protocol, buf, rwc, &http.Request{})
 	return
 }
 
